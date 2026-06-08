@@ -356,6 +356,13 @@ info.onAdd = () => {
   return div;
 };
 info.addTo(map);
+
+// iframe içinde tile yükleme sorunu için invalidateSize
+setTimeout(function(){ map.invalidateSize(); }, 400);
+window.addEventListener('load', function(){ map.invalidateSize(); });
+document.addEventListener('visibilitychange', function(){
+  if (!document.hidden) { map.invalidateSize(); }
+});
 </script>
 </body>
 </html>
