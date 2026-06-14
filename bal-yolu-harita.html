@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Türkiye Üç Omurgalı Bal Yolu · BAT/KAF/DAF Sismobiyofizik Haritası</title>
+<title>Türkiye Sismobiyofizik Koridoru · BAT/KAF/DAF · v7 Final</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
@@ -35,6 +35,12 @@
   .leg-line { width: 28px; height: 3px; border-radius: 2px; flex-shrink: 0; }
   .leg-dot  { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
 
+  @keyframes pulse {
+    0%   { transform: scale(1);   opacity: .6; }
+    50%  { transform: scale(1.5); opacity: .15; }
+    100% { transform: scale(1);   opacity: .6; }
+  }
+
   /* Custom popups */
   .leaflet-popup-content-wrapper {
     background: #1e293b;
@@ -57,8 +63,8 @@
 
 <div id="header">
   <span style="font-size:1.3rem;">🍯</span>
-  <h1>Türkiye Üç Omurgalı Bal Yolu · ~2.300 km</h1>
-  <span>BAT · KAF · DAF Fay Koridoru | BAT: Muğla → Afyon | KAF: Muğla → Bingöl | DAF: Bingöl → Hatay | Sismobiyofizik Jeo-Biyolojik Harita</span>
+  <h1>Türkiye Sismobiyofizik Koridoru · ~2.300 km · v7</h1>
+  <span>BAT (Normal Fay) · KAF (Sağ Yanal) · DAF (Sol Yanal) | Muğla → Afyon → Bingöl → Hatay | 5 Büyük Deprem · 5 Arı Irkı · Jeo-Biyolojik Atlas</span>
 </div>
 
 <div id="map"></div>
@@ -332,13 +338,13 @@ const stops = [
   },
   {
     ll: [39.14, 40.51], no: '09',
-    title: 'Bingöl — NAF/EAF Birleşim · Kekik Yaylası',
+    title: 'Karlıova / Bingöl — SİSMOBİYOFİZİK DÜĞÜM',
     season: 'Eylül – Ekim',
-    bal: 'Bingöl dağ kekiği balı (coğrafi işaret adayı)',
-    bio: 'A. m. meda + caucasica (Karlıova ekotipi)',
-    fault: '⚠️ NAF + EAF birleşim noktası (Karlıova) — BAF etkisi',
-    tags: ['Rota sonu', 'PDO adayı', 'NAF-EAF-BAF üçgeni', 'Genetik izolasyon'],
-    km: '~1.200 km'
+    bal: 'Bingöl dağ kekiği balı (coğrafi işaret adayı) · en karmaşık jeokimyasal parmak izi',
+    bio: 'A. m. meda + caucasica + anatoliaca (Karlıova çoklu ekotip kavşağı)',
+    fault: '⚠️ KAF + DAF + Bitlis-Zagros üçlü kavşağı (Karlıova) · dünyanın en özgün sismobiyolojik laboratuvarı',
+    tags: ['SİSMOBİYOFİZİK DÜĞÜM', 'KAF-DAF-BAF üçgeni', 'PDO adayı', 'Çoklu ekotip', 'Jeokimyasal zirve'],
+    km: '~1.200 km (KAF Bitiş / DAF Başlangıç)'
   }
 ];
 
@@ -648,26 +654,37 @@ legend.onAdd = () => {
   const div = L.DomUtil.create('div', 'legend');
   div.innerHTML = `
     <h3>🗺️ Harita Açıklaması</h3>
-    <div style="font-size:.72rem;color:#94a3b8;margin-bottom:4px;">── Fay Sistemleri ──</div>
-    <div class="leg-row"><div class="leg-line" style="background:${C.bat};"></div><span style="color:#4ade80;">BAT</span> · Batı Anadolu Genişleme</div>
-    <div class="leg-row"><div class="leg-line" style="background:${C.naf};"></div><span style="color:#f87171;">NAF</span> · Kuzey Anadolu Fayı</div>
-    <div class="leg-row"><div class="leg-line" style="background:${C.eaf};"></div><span style="color:#fb923c;">EAF</span> · Doğu Anadolu Fayı</div>
-    <div class="leg-row"><div class="leg-line" style="background:${C.baf};"></div><span style="color:#c084fc;">BAF</span> · Bitlis-Zagros Kuşağı</div>
-    <div class="leg-row"><div class="leg-line" style="background:#34d399;border-top:2px dashed #34d399;height:0;margin-top:6px;"></div><span style="color:#34d399;">Ganos / Trakya Uzantısı</span></div>
-    <div style="font-size:.72rem;color:#94a3b8;margin:6px 0 4px;">── Bal Yolu Aksları ──</div>
-    <div class="leg-row"><div class="leg-line" style="background:${C.bat};height:4px;"></div><span style="color:#4ade80;">BAT Bal Yolu</span> · Muğla → Afyon</div>
-    <div class="leg-row"><div class="leg-line" style="background:${C.route};height:4px;"></div><span style="color:#fbbf24;">KAF Bal Yolu</span> · Muğla → Bingöl</div>
-    <div class="leg-row"><div class="leg-line" style="background:#fb923c;height:4px;"></div><span style="color:#fb923c;">DAF Bal Yolu</span> · Bingöl → Hatay</div>
-    <div style="font-size:.72rem;color:#94a3b8;margin:6px 0 4px;">── Duraklar ──</div>
-    <div class="leg-row"><div class="leg-dot" style="background:#16a34a;border:2px solid #4ade80;"></div>Başlangıç — Muğla (BAT Düğümü)</div>
-    <div class="leg-row"><div class="leg-dot" style="background:#052e16;border:2px solid #4ade80;"></div><span style="color:#4ade80;">BAT</span> durakları (B1–B3)</div>
-    <div class="leg-row"><div class="leg-dot" style="background:#dc2626;border:2px solid #f87171;"></div>KAF Bitiş / DAF Başlangıç — Bingöl</div>
-    <div class="leg-row"><div class="leg-dot" style="background:#1c1008;border:2px solid #fb923c;"></div><span style="color:#fb923c;">DAF</span> durakları (D1–D4)</div>
-    <div class="leg-row"><div class="leg-dot" style="background:#0f2922;border:2px solid #34d399;"></div><span style="color:#34d399;">Trakya</span> durakları (T1–T3)</div>
-    <div style="margin-top:8px;font-size:.7rem;color:#64748b;border-top:1px solid rgba(255,255,255,.08);padding-top:6px;">
+    <div style="font-size:.7rem;color:#94a3b8;margin-bottom:3px;font-weight:600;">── Fay Sistemleri ──</div>
+    <div class="leg-row"><div class="leg-line" style="background:${C.bat};"></div><span style="color:#4ade80;">BAT</span> · Normal Fay · Genişleme</div>
+    <div style="font-size:.65rem;color:#64748b;padding-left:36px;line-height:1.6;margin-bottom:3px;">Büyük Menderes · Küçük Menderes<br>Gediz · Burdur-Fethiye · Gökova</div>
+    <div class="leg-row"><div class="leg-line" style="background:${C.naf};"></div><span style="color:#f87171;">KAF</span> · Sağ Yanal Atımlı</div>
+    <div class="leg-row"><div class="leg-line" style="background:${C.eaf};"></div><span style="color:#fb923c;">DAF</span> · Sol Yanal Atımlı</div>
+    <div class="leg-row"><div class="leg-line" style="background:${C.baf};"></div><span style="color:#c084fc;">BAF</span> · Bitlis-Zagros Kenet</div>
+    <div class="leg-row"><div class="leg-line" style="background:#34d399;height:2px;border-top:2px dashed #34d399;margin-top:1px;"></div><span style="color:#34d399;">Ganos / Trakya Uzantısı</span></div>
+    <div style="font-size:.7rem;color:#94a3b8;margin:5px 0 3px;font-weight:600;">── Bal Yolu Aksları ──</div>
+    <div class="leg-row"><div class="leg-line" style="background:${C.bat};height:4px;"></div><span style="color:#4ade80;">BAT</span> · Muğla → Afyon</div>
+    <div class="leg-row"><div class="leg-line" style="background:${C.route};height:4px;"></div><span style="color:#fbbf24;">KAF</span> · Muğla → Bingöl</div>
+    <div class="leg-row"><div class="leg-line" style="background:#fb923c;height:4px;"></div><span style="color:#fb923c;">DAF</span> · Bingöl → Hatay</div>
+    <div style="font-size:.7rem;color:#94a3b8;margin:5px 0 3px;font-weight:600;">── Arı Ekotipleri ──</div>
+    <div style="font-size:.65rem;color:#64748b;line-height:1.7;">
+      <span style="color:#4ade80;">🟢</span> <em>anatoliaca</em> — BAT/Batı<br>
+      <span style="color:#fbbf24;">🟡</span> <em>caucasica</em> — KAF/Karadeniz<br>
+      <span style="color:#fb923c;">🟠</span> <em>syriaca</em> — DAF/Güney<br>
+      <span style="color:#fb923c;">🟠</span> <em>meda</em> — Karlıova kavşağı<br>
+      <span style="color:#34d399;">🟣</span> <em>macedonica</em> — Trakya
+    </div>
+    <div style="font-size:.7rem;color:#94a3b8;margin:5px 0 3px;font-weight:600;">── Tarihsel Depremler ──</div>
+    <div style="font-size:.65rem;color:#64748b;line-height:1.7;">
+      <span style="color:#f87171;">★</span> 1939 Erzincan M7.8<br>
+      <span style="color:#f87171;">★</span> 1999 İzmit M7.6<br>
+      <span style="color:#fb923c;">★</span> 2011 Van M7.2<br>
+      <span style="color:#fb923c;">★</span> 2020 Elazığ M6.8<br>
+      <span style="color:#ef4444;">★</span> 2023 Kahramanmaraş M7.8
+    </div>
+    <div style="margin-top:6px;font-size:.65rem;color:#475569;border-top:1px solid rgba(255,255,255,.07);padding-top:5px;">
       Fay verileri: yaklaşık jeolojik hat<br>
-      Duraklar: tıklayarak detay görün<br>
-      Öncel, A. O. (2026) · v6 Final
+      Tıklayarak detay görün<br>
+      Öncel, A. O. (2026) · v7 Final
     </div>
   `;
   return div;
@@ -680,25 +697,109 @@ info.onAdd = () => {
   const div = L.DomUtil.create('div', 'legend');
   div.style.maxWidth = '220px';
   div.innerHTML = `
-    <h3>🍯 Üç Omurgalı Bal Yolu</h3>
-    <div style="color:#94a3b8;font-size:.75rem;line-height:1.7;">
-      <b style="color:#4ade80;">BAT aksı:</b> ~290 km · Muğla → Afyon<br>
-      <b style="color:#fbbf24;">KAF aksı:</b> ~1.200 km · Muğla → Bingöl<br>
-      <b style="color:#fb923c;">DAF aksı:</b> ~800 km · Bingöl → Hatay<br>
-      <b style="color:#e2e8f0;">~2.300 km</b> · üç omurga toplam<br>
-      <b style="color:#e2e8f0;">16 durak</b> · Kasım–Kasım döngüsü<br>
-      <span style="color:#4ade80;">BAT:</span> <em>anatoliaca</em> · Ca/Mg terroir<br>
+    <h3>🍯 Türkiye Sismobiyofizik Koridoru</h3>
+    <div style="color:#94a3b8;font-size:.74rem;line-height:1.7;">
+      <b style="color:#4ade80;">BAT</b> Normal fay · ~290 km · Muğla → Afyon<br>
+      <b style="color:#fbbf24;">KAF</b> Sağ yanal · ~1.200 km · Muğla → Bingöl<br>
+      <b style="color:#fb923c;">DAF</b> Sol yanal · ~800 km · Bingöl → Hatay<br>
+      <b style="color:#e2e8f0;">~2.300 km</b> · 19 durak · 5 arı ırkı<br>
+      <span style="color:#4ade80;">BAT:</span> Ca/Mg terroir · <em>anatoliaca</em><br>
       <span style="color:#fbbf24;">Çam balı:</span> Dünya üretiminin %90'ı<br>
-      <span style="color:#fb923c;">DAF:</span> <em>syriaca</em> + <em>meda</em> ekotipleri<br>
-      <span style="color:#86efac;">Bingöl:</span> NAF+EAF+BAF tektonik düğüm
+      <span style="color:#ef4444;">★ Bingöl:</span> KAF + DAF + BAF düğümü
     </div>
-    <div style="font-size:.68rem;color:#475569;margin-top:6px;">
+    <div style="font-size:.67rem;color:#475569;margin-top:6px;">
       BÜGEM/TÜİK 2023 · EFSA 2021<br>Ruttner 1988 · Varol 2024
     </div>
   `;
   return div;
 };
 info.addTo(map);
+
+// ── GÖKOVA GRABENİ (BAT tamamlayıcısı) ──────────────────────
+const gokovaCoords = [
+  [37.05, 28.00], // Marmaris/Gökova körfezi batı
+  [36.90, 28.50], // Gökova ortası
+  [37.00, 29.10]  // Köyceğiz-Ortaca doğu
+];
+L.polyline(gokovaCoords, {
+  color: C.bat, weight: 2, opacity: .7, dashArray: '4 6'
+}).bindTooltip('<strong style="color:#4ade80;">Gökova Grabeni</strong> · Batı Anadolu Genişleme', {sticky:true}).addTo(map);
+
+// ── KÜÇÜK MENDERES GRABENİ ───────────────────────────────────
+const kucukMenderesCoords = [
+  [38.23, 28.22], // Kiraz
+  [37.95, 27.60], // Tire
+  [37.95, 27.37]  // Selçuk/Efes
+];
+L.polyline(kucukMenderesCoords, {
+  color: C.bat, weight: 2, opacity: .7, dashArray: '4 6'
+}).bindTooltip('<strong style="color:#4ade80;">Küçük Menderes Grabeni</strong> · Batı Anadolu Genişleme', {sticky:true}).addTo(map);
+
+// ── KARLIova-BİNGÖL DÜĞÜM PULSE MARKER ──────────────────────
+// Özel büyütülmüş pulse ring — Sismobiyofizik Düğüm
+L.marker([39.14, 40.51], {
+  icon: L.divIcon({
+    html: `<div style="position:relative;width:60px;height:60px;">
+      <div style="position:absolute;inset:0;border-radius:50%;border:2px solid #f87171;animation:pulse 2s infinite;opacity:.6;"></div>
+      <div style="position:absolute;inset:8px;border-radius:50%;border:1px solid #fb923c;animation:pulse 2s .5s infinite;opacity:.5;"></div>
+      <div style="position:absolute;inset:16px;border-radius:50%;background:rgba(220,38,38,.3);border:2px solid #f87171;display:flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:700;color:#fff;text-align:center;line-height:1.1;">KAF<br>DAF<br>BAF</div>
+    </div>`,
+    iconSize: [60,60], iconAnchor:[30,30], className:''
+  }),
+  interactive: false,
+  zIndexOffset: -10
+}).addTo(map);
+
+// ── DEPREM KATMANI ────────────────────────────────────────────
+const earthquakes = [
+  { ll:[39.77, 39.53], year:1939, name:'Erzincan', mag:'M7.8', color:'#f87171' },
+  { ll:[40.74, 30.00], year:1999, name:'İzmit',    mag:'M7.6', color:'#f87171' },
+  { ll:[38.69, 43.40], year:2011, name:'Van',       mag:'M7.2', color:'#fb923c' },
+  { ll:[38.37, 39.07], year:2020, name:'Elazığ',   mag:'M6.8', color:'#fb923c' },
+  { ll:[37.22, 37.02], year:2023, name:'Kahramanmaraş', mag:'M7.8', color:'#ef4444' }
+];
+
+earthquakes.forEach(eq => {
+  L.marker(eq.ll, {
+    icon: L.divIcon({
+      html: `<div style="
+        font-size:16px;line-height:1;filter:drop-shadow(0 0 4px ${eq.color});
+        cursor:default;
+      ">★</div>`,
+      iconSize: [20,20], iconAnchor:[10,10], className:''
+    })
+  }).bindPopup(`
+    <div style="font-family:'Segoe UI',sans-serif;">
+      <div style="font-weight:700;color:${eq.color};font-size:.9rem;">★ ${eq.year} ${eq.name} Depremi</div>
+      <div style="color:#e2e8f0;font-size:.82rem;margin-top:4px;">${eq.mag} · Sismik mineralleşme ve jeokimyasal terroir etkisi</div>
+    </div>`, { maxWidth: 240 }
+  ).addTo(map);
+});
+
+// ── ARI EKOTİP KATMANI — metin etiketleri ───────────────────
+const ecotypes = [
+  { ll:[37.00, 27.80], label:'🟢 A. m. anatoliaca\nBatı Anadolu ekotipi', color:'#4ade80' },
+  { ll:[40.60, 35.00], label:'🟡 A. m. caucasica\nKaradeniz geçişi',       color:'#fbbf24' },
+  { ll:[39.00, 38.50], label:'🟡→🟠 Geçiş\ncaucasica / meda',              color:'#fdba74' },
+  { ll:[37.20, 37.50], label:'🟠 A. m. syriaca\nDAF Koridoru',              color:'#fb923c' },
+  { ll:[41.60, 27.00], label:'🟣 A. m. macedonica\nTrakya izole bölgesi',   color:'#34d399' }
+];
+
+ecotypes.forEach(e => {
+  const lines = e.label.split('\n');
+  L.marker(e.ll, {
+    icon: L.divIcon({
+      html: `<div style="
+        background:rgba(15,23,42,.82);border:1px solid ${e.color}55;
+        border-radius:6px;padding:4px 7px;white-space:nowrap;
+        font-size:.62rem;font-family:'Segoe UI',sans-serif;line-height:1.4;
+        color:${e.color};pointer-events:none;
+      ">${lines[0]}<br><span style="color:#94a3b8;">${lines[1]}</span></div>`,
+      iconSize: [130,32], iconAnchor:[65,16], className:''
+    }),
+    interactive: false
+  }).addTo(map);
+});
 
 // iframe içinde tile yükleme sorunu için invalidateSize
 setTimeout(function(){ map.invalidateSize(); }, 400);
