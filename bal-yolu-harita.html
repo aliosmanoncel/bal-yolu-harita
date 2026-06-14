@@ -885,18 +885,16 @@ L.control.layers(null, {
 // ── KAYNAKLAR PANELİ ─────────────────────────────────────────
 const refBtn = L.control({ position: 'bottomright' });
 refBtn.onAdd = () => {
-  const div = L.DomUtil.create('div');
+  const div = L.DomUtil.create('div', 'legend');
+  div.style.maxWidth = '280px';
   div.innerHTML = `
-    <button id="ref-toggle" onclick="document.getElementById('ref-panel').classList.toggle('hidden')"
-      style="background:rgba(15,23,42,.92);border:1px solid rgba(255,255,255,.15);color:#94a3b8;
-      border-radius:8px;padding:7px 14px;font-size:.75rem;cursor:pointer;font-family:'Segoe UI',sans-serif;">
-      📚 Kaynaklar
-    </button>
-    <div id="ref-panel" class="hidden" style="
-      margin-top:6px;background:rgba(15,23,42,.95);border:1px solid rgba(255,255,255,.12);
-      border-radius:10px;padding:14px 16px;font-size:.72rem;line-height:1.9;
-      color:#94a3b8;min-width:240px;max-width:280px;font-family:'Segoe UI',sans-serif;">
-      <div style="font-weight:700;color:#fbbf24;margin-bottom:8px;font-size:.78rem;">📚 Bilimsel Kaynaklar</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;"
+         onclick="(function(d){var b=d.querySelector('#ref-body');var t=d.querySelector('#ref-tog');var open=b.style.display!=='none';b.style.display=open?'none':'block';t.textContent=open?'▶':'▼';})(this.closest('.legend'))">
+      <h3 style="margin:0;">📚 Bilimsel Kaynaklar</h3>
+      <span id="ref-tog" style="color:#94a3b8;font-size:.8rem;margin-left:8px;">▼</span>
+    </div>
+    <div id="ref-body" style="display:none;">
+      <div style="height:1px;background:rgba(255,255,255,.07);margin:6px 0;"></div>
       <div style="color:#64748b;font-size:.68rem;margin-bottom:8px;border-bottom:1px solid rgba(255,255,255,.07);padding-bottom:6px;">Jeolojik Veri</div>
       <div>🗺️ <a href="https://www.mta.gov.tr" target="_blank" style="color:#7ab8ff;">MTA</a> — Aktif Fay Haritası</div>
       <div>🚨 <a href="https://www.afad.gov.tr" target="_blank" style="color:#7ab8ff;">AFAD</a> — Deprem Kataloğu</div>
@@ -921,7 +919,8 @@ refBtn.onAdd = () => {
         Öncel, A. O. (2026). <em>Fay Yolu Arıcılığı</em>.<br>
         JeoTurizm EduPanel · v8 Final · İstanbul Üniversitesi-Cerrahpaşa
       </div>
-    </div>`;
+    </div>
+  `;
   L.DomEvent.disableClickPropagation(div);
   L.DomEvent.disableScrollPropagation(div);
   return div;
