@@ -660,8 +660,13 @@ const legend = L.control({ position: 'bottomleft' });
 legend.onAdd = () => {
   const div = L.DomUtil.create('div', 'legend');
   div.innerHTML = `
-    <h3>🗺️ Harita Açıklaması</h3>
-    <div style="font-size:.7rem;color:#94a3b8;margin-bottom:3px;font-weight:600;">── Fay Sistemleri ──</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;"
+         onclick="(function(d){var b=d.querySelector('#leg-body');var t=d.querySelector('#leg-tog');var open=b.style.display!=='none';b.style.display=open?'none':'block';t.textContent=open?'▶':'▼';})(this.closest('.legend'))">
+      <h3 style="margin:0;">🗺️ Harita Açıklaması</h3>
+      <span id="leg-tog" style="color:#94a3b8;font-size:.8rem;margin-left:8px;">▼</span>
+    </div>
+    <div id="leg-body">
+    <div style="font-size:.7rem;color:#94a3b8;margin:4px 0 3px;font-weight:600;">── Fay Sistemleri ──</div>
     <div class="leg-row"><div class="leg-line" style="background:${C.bat};"></div><span style="color:#4ade80;">BAT</span> · Normal Fay · Genişleme</div>
     <div style="font-size:.65rem;color:#64748b;padding-left:36px;line-height:1.6;margin-bottom:3px;">Büyük Menderes · Küçük Menderes<br>Gediz · Burdur-Fethiye · Gökova</div>
     <div class="leg-row"><div class="leg-line" style="background:${C.naf};"></div><span style="color:#f87171;">KAF</span> · Sağ Yanal Atımlı</div>
@@ -691,7 +696,8 @@ legend.onAdd = () => {
     <div style="margin-top:6px;font-size:.65rem;color:#475569;border-top:1px solid rgba(255,255,255,.07);padding-top:5px;">
       Fay verileri: yaklaşık jeolojik hat<br>
       Tıklayarak detay görün<br>
-      Öncel, A. O. (2026) · v7 Final
+      Öncel, A. O. (2026) · v8 Final
+    </div>
     </div>
   `;
   return div;
@@ -704,8 +710,13 @@ info.onAdd = () => {
   const div = L.DomUtil.create('div', 'legend');
   div.style.maxWidth = '220px';
   div.innerHTML = `
-    <h3>🍯 Türkiye Sismobiyofizik Koridoru</h3>
-    <div style="color:#94a3b8;font-size:.74rem;line-height:1.7;">
+    <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;"
+         onclick="(function(d){var b=d.querySelector('#inf-body');var t=d.querySelector('#inf-tog');var open=b.style.display!=='none';b.style.display=open?'none':'block';t.textContent=open?'▶':'▼';})(this.closest('.legend'))">
+      <h3 style="margin:0;">🍯 Türkiye Sismobiyofizik Koridoru</h3>
+      <span id="inf-tog" style="color:#94a3b8;font-size:.8rem;margin-left:8px;">▼</span>
+    </div>
+    <div id="inf-body">
+    <div style="color:#94a3b8;font-size:.74rem;line-height:1.7;margin-top:4px;">
       <b style="color:#4ade80;">BAT</b> Normal fay · ~290 km · Muğla → Afyon<br>
       <b style="color:#fbbf24;">KAF</b> Sağ yanal · ~1.200 km · Muğla → Bingöl<br>
       <b style="color:#fb923c;">DAF</b> Sol yanal · ~800 km · Bingöl → Hatay<br>
@@ -716,6 +727,7 @@ info.onAdd = () => {
     </div>
     <div style="font-size:.67rem;color:#475569;margin-top:6px;">
       BÜGEM/TÜİK 2023 · EFSA 2021<br>Ruttner 1988 · Varol 2024
+    </div>
     </div>
   `;
   return div;
