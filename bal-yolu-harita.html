@@ -261,25 +261,48 @@ for (let i = 0; i < routeCoords.length - 1; i++) {
   }).addTo(lRota);
 }
 
+// ── POP-UP YARDIMCI FONKSİYONU ────────────────────────────────
+function makeCard(s, accentColor, corridorLabel) {
+  const tagsHtml = s.tags.map(t =>
+    `<span class="popup-tag" style="background:rgba(${accentColor},.12);border-color:rgba(${accentColor},.35);color:rgba(${accentColor},1);">${t}</span>`
+  ).join(' ');
+  return `
+    <div class="popup-title" style="color:rgba(${accentColor},1);">${corridorLabel} — ${s.no} · ${s.title}</div>
+    <span class="popup-season" style="background:rgba(${accentColor},.15);border-color:rgba(${accentColor},.3);color:rgba(${accentColor},1);">🗓 ${s.season}</span>
+    <table style="width:100%;border-collapse:collapse;margin-top:6px;font-size:.78rem;">
+      <tr><td style="padding:3px 0;vertical-align:top;width:22px;">🌋</td>
+          <td style="padding:3px 0;vertical-align:top;"><b style="color:#94a3b8;">Jeofizik:</b><br>${s.fault}</td></tr>
+      <tr><td style="padding:3px 0;vertical-align:top;">🐝</td>
+          <td style="padding:3px 0;vertical-align:top;"><b style="color:#94a3b8;">Ekoloji / Arıcılık:</b><br>${s.bal}<br><em style="color:#c4b5fd;">${s.bio}</em></td></tr>
+      <tr><td style="padding:3px 0;vertical-align:top;">🗺️</td>
+          <td style="padding:3px 0;vertical-align:top;"><b style="color:#94a3b8;">Jeoturizm:</b><br>${s.jeotour}</td></tr>
+    </table>
+    <div style="margin-top:5px;">${tagsHtml}</div>
+    <div style="font-size:.68rem;color:#475569;margin-top:4px;">${s.km}</div>
+  `;
+}
+
 // ── DURAK İŞARETÇİLERİ ───────────────────────────────────────
 const stops = [
   {
     ll: [37.21, 28.36], no: '01',
     title: 'Muğla / Marmaris — Kızılçam Kışlağı',
     season: 'Kasım – Şubat',
-    bal: 'Kızılçam balı (honeydew)',
-    bio: 'A. m. anatoliaca',
-    fault: '🌱 BAT Düğümü — Menderes+Burdur-Fethiye açılma rejimi · Ca/Mg mineral zenginleşmesi (Tolon 1999)',
-    tags: ['BAT Başlangıcı', 'Kızılçam', 'Marchalina hellenica', 'Dünya %90 honeydew', 'anatoliaca izolasyonu'],
+    bal: 'Kızılçam balı (honeydew) · Marchalina hellenica · dünya üretiminin %90\'ı',
+    bio: 'A. m. anatoliaca (Ege izolasyonu)',
+    fault: 'BAT Düğümü — Menderes + Burdur-Fethiye açılma rejimi · Ca/Mg mineral zenginleşmesi',
+    jeotour: 'Muğla Bal Müzesi · kızılçam tarlası gözlem · Datça zeytinyağı-bal güzergahı',
+    tags: ['BAT Başlangıcı', 'Kızılçam', 'Dünya %90 honeydew', 'anatoliaca'],
     km: '0 km'
   },
   {
     ll: [36.89, 30.70], no: '02',
     title: 'Antalya / Alanya — Narenciye & Turizm',
     season: 'Mart – Nisan',
-    bal: 'Narenciye çiçek balı',
+    bal: 'Narenciye çiçek balı · limon-portakal aroması',
     bio: 'A. m. anatoliaca / carnica geçişi',
-    fault: 'Akdeniz kıyı tektonik terası',
+    fault: 'Akdeniz kıyı tektonik terası · Toros dağ ön cephesi',
+    jeotour: 'Alanya Kalesi jeopark güzergahı · narenciye bahçesi ziyareti · Konyaaltı sahil kovanları',
     tags: ['Narenciye', 'Çiçek balı', 'Bahar geçişi'],
     km: '~180 km'
   },
@@ -287,9 +310,10 @@ const stops = [
     ll: [37.76, 30.55], no: '03',
     title: 'Isparta — Gül Bahçeleri & Yayla',
     season: 'Nisan – Mayıs',
-    bal: 'Gül balı · hafif çiçeksi profil',
-    bio: 'A. m. anatoliaca',
-    fault: 'Isparta Büklümü — NAF öncesi gerilim zonu',
+    bal: 'Gül balı · hafif çiçeksi profil · gül yağı sinerjisi',
+    bio: 'A. m. anatoliaca (güneybatı Anadolu)',
+    fault: 'Isparta Büklümü — NAF öncesi gerilim zonu · Burdur Gölü çöküntüsü',
+    jeotour: 'Isparta Gül Festivali (Mayıs) · gül bahçesi kovan deneyimi · Kovada Gölü doğa parkı',
     tags: ['Gül festivali', 'Isparta Büklümü', 'Gülyağı sinerjisi'],
     km: '~280 km'
   },
@@ -297,9 +321,10 @@ const stops = [
     ll: [37.87, 32.49], no: '04',
     title: 'Konya / Çumra — Ayçiçeği & Kekik Kuşağı',
     season: 'Mayıs – Temmuz',
-    bal: 'Ayçiçeği + kekik balı',
-    bio: 'A. m. anatoliaca (İç Anadolu)',
-    fault: 'Tuz Gölü Fay Zonu · karasal platform',
+    bal: 'Ayçiçeği + kekik balı · tozlaşma hizmeti',
+    bio: 'A. m. anatoliaca (İç Anadolu stepi)',
+    fault: 'Tuz Gölü Fay Zonu · karasal platform · düşük sismik geçiş',
+    jeotour: 'Çatalhöyük arkeoloji parkı · Sille köy arıcılık deneyimi · Mevlana Müzesi kültür durağı',
     tags: ['Ayçiçeği', 'Kekik', 'Tozlaşma hizmeti'],
     km: '~480 km'
   },
@@ -307,50 +332,55 @@ const stops = [
     ll: [38.74, 32.48], no: '05',
     title: 'Ankara / Haymana — Geçiş Koridoru',
     season: 'Haziran',
-    bal: 'Bozkır kekik + orman balı',
-    bio: 'A. m. anatoliaca',
-    fault: 'İç Anadolu platformu · fay etkisi düşük',
-    tags: ['Geçiş noktası', 'Kekik bozkırı'],
+    bal: 'Bozkır kekik + orman balı · mineral çeşitliliği',
+    bio: 'A. m. anatoliaca (geçiş popülasyonu)',
+    fault: 'İç Anadolu platformu · NAF güney sınırı · fay etkisi sınırlı',
+    jeotour: 'Haymana kaplıcaları jeoloji durağı · Ankara Arıcılık Araştırma Enstitüsü ziyareti',
+    tags: ['Geçiş noktası', 'Kekik bozkırı', 'Araştırma merkezi'],
     km: '~580 km'
   },
   {
     ll: [40.31, 36.55], no: '06',
     title: 'Tokat / Niksar — Kiraz & Elma Yaylası',
     season: 'Temmuz',
-    bal: 'Meyve çiçek balı',
-    bio: 'A. m. caucasica geçişi',
-    fault: 'NAF güney kolu (Kelkit Vadisi)',
-    tags: ['Kiraz', 'Elma', 'NAF yakını'],
+    bal: 'Meyve çiçek balı · kiraz + elma polifloral profil',
+    bio: 'A. m. caucasica (Karadeniz geçişi)',
+    fault: 'NAF güney kolu (Kelkit Vadisi) · aktif segmentasyon',
+    jeotour: 'Niksar kalesinden NAF vadisi panoraması · kiraz bahçesi kovan deneyimi · Yeşilırmak rafting güzergahı',
+    tags: ['Kiraz', 'Elma', 'NAF yakını', 'Kafkas geçişi'],
     km: '~820 km'
   },
   {
     ll: [41.00, 37.87], no: '07',
     title: 'Ordu / Giresun — Çiçek Yaylacılığı',
     season: 'Temmuz – Ağustos',
-    bal: 'Yayla çiçek balı',
-    bio: 'A. m. caucasica (Karadeniz)',
-    fault: 'Kuzey Anadolu orojenik kuşak · Pontid kenarı',
-    tags: ['Fındık', 'Yayla balı', 'Kafkas ırkı'],
+    bal: 'Yayla çiçek balı · kara kovan geleneği · yüksek irtifa aroması',
+    bio: 'A. m. caucasica (Karadeniz Kafkas ekotipi)',
+    fault: 'Kuzey Anadolu orojenik kuşak · Pontid kenarı · Karadeniz kıta tektoniği',
+    jeotour: 'Ordu yaylası kara kovan müzesi · fındık bahçesi eko-turu · Boztepe seyir terasından Karadeniz panoraması',
+    tags: ['Fındık', 'Yayla balı', 'Kara kovan', 'Kafkas ırkı'],
     km: '~950 km'
   },
   {
     ll: [39.90, 38.68], no: '08',
     title: 'Erzincan — NAF Kavşağı',
     season: 'Ağustos – Eylül',
-    bal: 'Dağ kekiği + papatya',
-    bio: 'A. m. caucasica / meda geçişi',
-    fault: '⚠️ NAF ana kolu — Erzincan havzası (M7.8, 1939)',
-    tags: ['NAF kavşağı', 'Mineralce zengin flora', 'Jeokimyasal iz'],
+    bal: 'Dağ kekiği + papatya · jeokimyasal iz elementleri (Fe/Zn)',
+    bio: 'A. m. caucasica / meda geçişi (hibritleşme zonu)',
+    fault: '⚠️ NAF ana kolu — Erzincan havzası · M7.8 (1939) · aktif sismik dilim',
+    jeotour: '1939 deprem anıtı gözlem noktası · Erzincan deprem bilim merkezi · Munzur milli parkı',
+    tags: ['NAF kavşağı', 'Fe/Zn mineral izi', 'Jeokimyasal iz', 'Sismik hafıza'],
     km: '~1.050 km'
   },
   {
     ll: [39.14, 40.51], no: '09',
     title: 'Karlıova / Bingöl — SİSMOBİYOFİZİK DÜĞÜM',
     season: 'Eylül – Ekim',
-    bal: 'Bingöl dağ kekiği balı (coğrafi işaret adayı) · en karmaşık jeokimyasal parmak izi',
-    bio: 'A. m. meda + caucasica + anatoliaca (Karlıova çoklu ekotip kavşağı)',
-    fault: '⚠️ KAF + DAF + Bitlis-Zagros üçlü kavşağı (Karlıova) · dünyanın en özgün sismobiyolojik laboratuvarı',
-    tags: ['SİSMOBİYOFİZİK DÜĞÜM', 'KAF-DAF-BAF üçgeni', 'PDO adayı', 'Çoklu ekotip', 'Jeokimyasal zirve'],
+    bal: 'Bingöl dağ kekiği balı (PDO adayı) · en karmaşık jeokimyasal parmak izi',
+    bio: 'A. m. meda + caucasica + anatoliaca (üçlü ekotip kavşağı)',
+    fault: '⚠️ KAF + DAF + Bitlis-Zagros üçlü kavşağı · Karlıova · dünyanın en özgün sismobiyolojik laboratuvarı',
+    jeotour: 'Karlıova fay gözlem noktası · Bingöl bal festivali (Ekim) · Munzur-Fırat doğa yürüyüşü',
+    tags: ['SİSMOBİYOFİZİK DÜĞÜM', 'KAF-DAF-BAF üçgeni', 'PDO adayı', 'Çoklu ekotip'],
     km: '~1.200 km (KAF Bitiş / DAF Başlangıç)'
   }
 ];
@@ -392,9 +422,10 @@ const batStops = [
     ll: [37.85, 27.85], no: 'B1',
     title: 'Aydın / Büyük Menderes — Graben Merkezi',
     season: 'Mart – Mayıs · Kasım–Şubat',
-    bal: 'Pamuk + narenciye + kestane çiçek balı',
+    bal: 'Pamuk + narenciye + kestane çiçek balı · Ca/Mg mineral izi',
     bio: 'A. m. anatoliaca (Büyük Menderes ekotipi)',
-    fault: 'Büyük Menderes Grabeni · Ca/Mg mineral zenginleşmesi · açılma rejimi',
+    fault: 'Büyük Menderes Grabeni · normal fay açılma rejimi · Ca/Mg mineral zenginleşmesi (Tolon 1999)',
+    jeotour: 'Menderes vadisi kovan yürüyüşü · Efes–Didim arkeoloji bal güzergahı · pamuk tarlası polinasyon gözlemi',
     tags: ['Menderes Grabeni', 'Mineral zenginliği', 'Kestane balı', 'Pamuk balı'],
     km: 'BAT — ~80 km'
   },
@@ -402,9 +433,10 @@ const batStops = [
     ll: [37.77, 29.09], no: 'B2',
     title: 'Denizli / Pamukkale — Travertenli Terroir',
     season: 'Nisan – Haziran',
-    bal: 'Kekik + çiçek balı · Denizli terroir',
+    bal: 'Kekik + çiçek balı · travertenli Ca-Mg terroir profili',
     bio: 'A. m. anatoliaca (güneybatı ekotipi)',
-    fault: 'Burdur-Fethiye-Denizli açılma sistemi · travertenli Ca-Mg çıkışları (UNESCO)',
+    fault: 'Burdur-Fethiye-Denizli açılma sistemi · travertenli Ca-Mg çıkışları · UNESCO Dünya Mirası',
+    jeotour: 'Pamukkale termal havuzları jeoloji turu · Hierapolis antik kenti · kekik tarlası kovan gözlemi',
     tags: ['Pamukkale traverteni', 'Jeotermik terroir', 'Ca-Mg balı', 'UNESCO alanı'],
     km: 'BAT — ~180 km'
   },
@@ -412,9 +444,10 @@ const batStops = [
     ll: [38.75, 30.54], no: 'B3',
     title: 'Afyon — BAT/KAF Kavşak Düğümü',
     season: 'Mayıs – Temmuz',
-    bal: 'Haşhaş + kekik + yayla balı (geçiş profili)',
+    bal: 'Haşhaş + kekik + yayla balı · tektonik geçiş profili',
     bio: 'A. m. anatoliaca · caucasica geçiş kuşağı',
-    fault: 'Batı Anadolu genişlemesinden KAF sıkışma zonuna geçiş · önemli tektonik sınır',
+    fault: 'Batı Anadolu genişlemesinden KAF sıkışma zonuna tektonik geçiş · önemli jeofizik sınır',
+    jeotour: 'Afyon Jeopark güzergahı · kaplıca-kovan terroir karşılaştırma · haşhaş tarlası tozlaşma gözlemi',
     tags: ['BAT-KAF kavşağı', 'Haşhaş balı', 'Afyon kaplıcaları', 'Tektonik sınır'],
     km: 'BAT — ~290 km'
   }
@@ -434,18 +467,8 @@ function makeBatIcon(no) {
 }
 
 batStops.forEach(s => {
-  const tagsHtml = s.tags.map(t => `<span class="popup-tag" style="background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.3);color:#86efac;">${t}</span>`).join(' ');
-  const popupHtml = `
-    <div class="popup-title" style="color:#4ade80;">🌱 BAT KORIDORU — ${s.no} · ${s.title}</div>
-    <span class="popup-season" style="background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.3);color:#4ade80;">🗓 ${s.season}</span>
-    <div><b style="color:#86efac;">Bal:</b> ${s.bal}</div>
-    <div><b style="color:#c4b5fd;">Irk:</b> <em>${s.bio}</em></div>
-    <div style="margin-top:4px;">${tagsHtml}</div>
-    <div class="popup-fault">🌋 ${s.fault}</div>
-    <div style="font-size:.7rem;color:#64748b;margin-top:4px;">${s.km}</div>
-  `;
   L.marker(s.ll, { icon: makeBatIcon(s.no) })
-    .bindPopup(popupHtml, { maxWidth: 320 })
+    .bindPopup(makeCard(s, '74,222,128', '🌱 BAT KORIDORU'), { maxWidth: 340 })
     .addTo(lRota);
 });
 
@@ -488,9 +511,10 @@ const dafStops = [
     ll: [38.68, 39.22], no: 'D1',
     title: 'Elazığ / Harput — DAF Kuzey Girişi',
     season: 'Eylül – Ekim',
-    bal: 'Kekik + geven + papatya balı',
+    bal: 'Kekik + geven + papatya balı · bazaltik mineral izi',
     bio: 'A. m. meda (Med arısı) — DAF ekotipi',
-    fault: '⚠️ EAF Palu-Elazığ segmenti · sismik mineralleşme',
+    fault: '⚠️ EAF Palu-Elazığ segmenti · bazaltik toprak-mineral etkileşimi · aktif sismik kuşak',
+    jeotour: 'Harput kalesi jeoloji panoraması · Keban Barajı göl balıkçılık + arıcılık güzergahı · Elazığ Arıcılık Derneği ziyareti',
     tags: ['EAF girişi', 'Bazaltik toprak', 'Meda ekotipi', 'Jeokimyasal parmak izi'],
     km: 'DAF — ~80 km'
   },
@@ -498,9 +522,10 @@ const dafStops = [
     ll: [38.35, 38.31], no: 'D2',
     title: 'Malatya / Akçadağ — Kayısı & Kekik Koridoru',
     season: 'Ağustos – Ekim',
-    bal: 'Kayısı çiçek balı + kekik balı (monofloral)',
+    bal: 'Kayısı çiçek balı + kekik balı (monofloral) · PDO adayı',
     bio: 'A. m. meda · syriaca geçiş kuşağı',
-    fault: '⚠️ EAF Pütürge-Malatya segmenti · 2023 artçı etkisi',
+    fault: '⚠️ EAF Pütürge-Malatya segmenti · 2023 artçı etki zonu · aktif deformasyon',
+    jeotour: 'Malatya kayısı müzesi + kovan deneyimi · Akçadağ yaylası flora gözlemi · 2023 depremi anı parkı',
     tags: ['Dünya kayısı merkezi', 'Kovan kiralama', 'EAF koridoru', 'PDO adayı'],
     km: 'DAF — ~200 km'
   },
@@ -508,9 +533,10 @@ const dafStops = [
     ll: [37.57, 36.93], no: 'D3',
     title: 'Kahramanmaraş — EAF Merkez · Sismobiyofizik Hub',
     season: 'Temmuz – Eylül',
-    bal: 'Narenciye + kekik + badem balı karışımı',
-    bio: 'A. m. syriaca (Suriye arısı) · kuzey sınırı',
-    fault: '⚠️ EAF Nurdağı-Islahiye segmenti (M7.8 · 06.02.2023)',
+    bal: 'Narenciye + kekik + badem balı karışımı · çok bileşenli aromalı',
+    bio: 'A. m. syriaca (Suriye arısı) · kuzey dağılım sınırı',
+    fault: '⚠️ EAF Nurdağı-Islahiye segmenti · M7.8 (06.02.2023) · aktif yüzey kırığı',
+    jeotour: '2023 deprem anıtı + fay yüzey kırığı sahası · Kahramanmaraş bal çarşısı · Ahır Dağı yaylası kovan güzergahı',
     tags: ['2023 depremi', 'Sismobiyofizik merkezi', 'Syriaca sınırı', 'Biyo-ekonomik güç hattı'],
     km: 'DAF — ~350 km'
   },
@@ -518,10 +544,11 @@ const dafStops = [
     ll: [36.20, 36.16], no: 'D4',
     title: 'Hatay / Antakya — DAF Bitiş · Akdeniz Kavşağı',
     season: 'Mart – Mayıs · Kasım',
-    bal: 'Turunçgil + defne + kekik balı (Akdeniz tipi)',
+    bal: 'Turunçgil + defne + kekik balı (Akdeniz tipi) · Hatay PDO',
     bio: 'A. m. syriaca (Suriye arısı) — ana dağılım merkezi',
-    fault: '⚠️ EAF-BAF-Ölü Deniz Fayı üçgeni · Amik Ovası çöküşü',
-    tags: ['Ölü Deniz Fayı', 'Syriaca merkezi', 'İklimel varlık', 'Hatay balı PDO'],
+    fault: '⚠️ EAF-BAF-Ölü Deniz Fayı üçgeni · Amik Ovası çöküşü · plaka sınırı',
+    jeotour: 'Antakya Arkeoloji Müzesi + arı-tarih gezisi · Defne ilçesi geleneksel arıcılık · Amik Ovası sulakalanı gözlem',
+    tags: ['Ölü Deniz Fayı', 'Syriaca merkezi', 'Hatay balı PDO', 'Akdeniz kavşağı'],
     km: 'DAF — ~500 km'
   }
 ];
@@ -543,18 +570,8 @@ function makeDafIcon(no, isLast) {
 
 dafStops.forEach((s, i) => {
   const isLast = i === dafStops.length - 1;
-  const tagsHtml = s.tags.map(t => `<span class="popup-tag" style="background:rgba(251,146,60,.12);border-color:rgba(251,146,60,.3);color:#fdba74;">${t}</span>`).join(' ');
-  const popupHtml = `
-    <div class="popup-title" style="color:#fb923c;">🍊 DAF KORIDORU — ${s.no} · ${s.title}</div>
-    <span class="popup-season" style="background:rgba(251,146,60,.15);border-color:rgba(251,146,60,.3);color:#fb923c;">🗓 ${s.season}</span>
-    <div><b style="color:#86efac;">Bal:</b> ${s.bal}</div>
-    <div><b style="color:#c4b5fd;">Irk:</b> <em>${s.bio}</em></div>
-    <div style="margin-top:4px;">${tagsHtml}</div>
-    <div class="popup-fault">🌋 ${s.fault}</div>
-    <div style="font-size:.7rem;color:#64748b;margin-top:4px;">${s.km}</div>
-  `;
   L.marker(s.ll, { icon: makeDafIcon(s.no, isLast) })
-    .bindPopup(popupHtml, { maxWidth: 320 })
+    .bindPopup(makeCard(s, '251,146,60', '🍊 DAF KORIDORU'), { maxWidth: 340 })
     .addTo(lRota);
 });
 
@@ -568,6 +585,7 @@ const trakyaStops = [
     bal: 'Çam balı · kekik · sığırkuyruğu',
     bio: 'A. m. carnica / anatoliaca geçiş kuşağı',
     fault: 'KAFZ Ganos hattı batı ucu · Çanakkale boğaz tektoniği',
+    jeotour: 'Bozcaada şarap-bal güzergahı · çam ormanı kovan trekking · Kuzey Ege jeopark rotası',
     tags: ['Çam balı', 'Bozcaada izolasyonu', 'Kuzey Ege'],
     km: 'Trakya Uzantısı'
   },
@@ -576,9 +594,10 @@ const trakyaStops = [
     no: 'T2',
     title: 'Gökçeada — Ada İzolasyonu · Özgün Ekotip',
     season: 'Haziran – Eylül',
-    bal: 'Kekik + yabani enginar + sığırkuyruğu karışım balı',
-    bio: 'A. m. carnica (izole ada popülasyonu)',
-    fault: 'Ada tektonik bloğu · Ege genişleme sistemi',
+    bal: 'Kekik + yabani enginar + sığırkuyruğu karışım balı · ada florasına özgü',
+    bio: 'A. m. carnica (izole ada popülasyonu · morfometrik ayrışma)',
+    fault: 'Ada tektonik bloğu · Ege genişleme sistemi · izolasyon bariyeri',
+    jeotour: 'Gökçeada ekolojik kovan ziyareti · ada florasından bal tatma · morfometrik araştırma örnek sahasına gezi',
     tags: ['Ada izolasyonu', 'Morfometrik ayrışma', 'Case Study', 'PDO adayı'],
     km: 'Trakya Uzantısı'
   },
@@ -587,9 +606,10 @@ const trakyaStops = [
     no: 'T3',
     title: 'Kırklareli / Kofçaz — Bakanlık İzole Bölgesi',
     season: 'Temmuz – Ağustos',
-    bal: 'Ayçiçeği + meşe + faselya balı',
-    bio: 'A. m. macedonica · "Trakya Arısı" (30 km koruma alanı)',
-    fault: 'Karadeniz bloku · KAFZ kuzeyinde sismik istikrar',
+    bal: 'Ayçiçeği + meşe + faselya balı · tescilli genetik saflık',
+    bio: 'A. m. macedonica · "Trakya Arısı" (30 km Bakanlık koruma alanı)',
+    fault: 'Karadeniz bloku · KAFZ kuzeyinde düşük sismisiteli istikrarlı alan',
+    jeotour: 'Kofçaz yaban hayatı parkı · Trakya arısı gen bankası ziyareti · Istranca ormanları flora gözlemi',
     tags: ['Bakanlık tescili', '30 km izole bölge', 'Faselya', 'Biyosensör düğümü'],
     km: 'Trakya Uzantısı'
   }
@@ -597,16 +617,6 @@ const trakyaStops = [
 
 // Trakya duraklarını çiz (yeşil, farklı ikon)
 trakyaStops.forEach(s => {
-  const tagsHtml = s.tags.map(t => `<span class="popup-tag">${t}</span>`).join(' ');
-  const popupHtml = `
-    <div class="popup-title" style="color:#34d399;">🌿 TRAKYA UZANTISI — ${s.no} · ${s.title}</div>
-    <span class="popup-season" style="background:rgba(52,211,153,.15);border-color:rgba(52,211,153,.3);color:#34d399;">🗓 ${s.season}</span>
-    <div><b style="color:#86efac;">Bal:</b> ${s.bal}</div>
-    <div><b style="color:#c4b5fd;">Irk:</b> <em>${s.bio}</em></div>
-    <div style="margin-top:4px;">${tagsHtml}</div>
-    <div class="popup-fault">🌋 ${s.fault}</div>
-    <div style="font-size:.7rem;color:#64748b;margin-top:4px;">${s.km}</div>
-  `;
   L.marker(s.ll, {
     icon: L.divIcon({
       html: `<div style="
@@ -618,7 +628,7 @@ trakyaStops.forEach(s => {
       ">${s.no}</div>`,
       iconSize: [32,32], iconAnchor:[16,16], popupAnchor:[0,-18], className:''
     })
-  }).bindPopup(popupHtml, { maxWidth: 300 }).addTo(lRota);
+  }).bindPopup(makeCard(s, '52,211,153', '🌿 TRAKYA UZANTISI'), { maxWidth: 340 }).addTo(lRota);
 });
 
 // Durak işaretçisi ikonu
@@ -640,18 +650,8 @@ function makeStopIcon(no, isFirst, isLast) {
 
 stops.forEach((s, i) => {
   const isFirst = i === 0, isLast = i === stops.length - 1;
-  const tagsHtml = s.tags.map(t => `<span class="popup-tag">${t}</span>`).join(' ');
-  const popupHtml = `
-    <div class="popup-title">📍 DURAK ${s.no} — ${s.title}</div>
-    <span class="popup-season">🗓 ${s.season}</span>
-    <div><b style="color:#86efac;">Bal:</b> ${s.bal}</div>
-    <div><b style="color:#c4b5fd;">Irk:</b> <em>${s.bio}</em></div>
-    <div style="margin-top:4px;">${tagsHtml}</div>
-    <div class="popup-fault">🌋 ${s.fault}</div>
-    <div style="font-size:.7rem;color:#64748b;margin-top:4px;">Muğla'dan uzaklık: ${s.km}</div>
-  `;
   L.marker(s.ll, { icon: makeStopIcon(s.no, isFirst, isLast) })
-    .bindPopup(popupHtml, { maxWidth: 300 })
+    .bindPopup(makeCard(s, '251,191,36', `📍 KAF KORIDORU`), { maxWidth: 340 })
     .addTo(lRota);
 });
 
@@ -952,6 +952,62 @@ disclaimer.onAdd = () => {
   return div;
 };
 disclaimer.addTo(map);
+
+// ── FAY HATTI BİLGİ İKONLARI (#3) ───────────────────────────
+function fayInfoIcon(color) {
+  return L.divIcon({
+    html: `<div style="
+      width:22px;height:22px;border-radius:50%;
+      background:rgba(15,23,42,.9);border:2px solid ${color};
+      display:flex;align-items:center;justify-content:center;
+      font-size:.75rem;font-weight:700;color:${color};
+      box-shadow:0 0 8px ${color}88;cursor:pointer;
+    ">ℹ</div>`,
+    iconSize:[22,22], iconAnchor:[11,11], popupAnchor:[0,-14], className:''
+  });
+}
+
+// KAF (Kuzey Anadolu Fayı) — hat ortası ~Erzincan yakını
+L.marker([40.5, 34.5], { icon: fayInfoIcon('#f87171') })
+  .bindPopup(`
+    <div class="popup-title" style="color:#f87171;">🔴 KAF — Kuzey Anadolu Fayı</div>
+    <div style="font-size:.78rem;color:#94a3b8;line-height:1.7;margin-top:4px;">
+      <b style="color:#e2e8f0;">Tip:</b> Sağ Yanal Doğrultu Atımlı · ~1.500 km<br>
+      <b style="color:#e2e8f0;">Bal:</b> Kestane · Ihlamur · Orman Gülü · Yayla çiçek<br>
+      <b style="color:#e2e8f0;">Irk:</b> <em>A. m. caucasica</em> (Kafkas arısı)<br>
+      <b style="color:#e2e8f0;">Sezon:</b> Temmuz – Eylül<br>
+      <b style="color:#e2e8f0;">Jeofizik:</b> Sıkışma + sağ yanal kayma · Ca/Fe mineral zenginleşmesi<br>
+      <span style="font-size:.68rem;color:#475569;">Veri: MTA/AFAD · genelleştirilmiş hat</span>
+    </div>
+  `, { maxWidth: 280 }).addTo(lFay);
+
+// EAF/DAF (Doğu Anadolu Fayı) — hat ortası ~Malatya kuzeyi
+L.marker([38.8, 38.0], { icon: fayInfoIcon('#fb923c') })
+  .bindPopup(`
+    <div class="popup-title" style="color:#fb923c;">🟠 DAF — Doğu Anadolu Fayı</div>
+    <div style="font-size:.78rem;color:#94a3b8;line-height:1.7;margin-top:4px;">
+      <b style="color:#e2e8f0;">Tip:</b> Sol Yanal Doğrultu Atımlı · ~800 km<br>
+      <b style="color:#e2e8f0;">Bal:</b> Kekik · Geven · Badem · Kayısı<br>
+      <b style="color:#e2e8f0;">Irk:</b> <em>A. m. meda</em> / <em>syriaca</em> geçiş kuşağı<br>
+      <b style="color:#e2e8f0;">Sezon:</b> Ağustos – Ekim<br>
+      <b style="color:#e2e8f0;">Jeofizik:</b> Sol yanal kayma · bazaltik mineral zenginleşmesi<br>
+      <span style="font-size:.68rem;color:#475569;">M7.8 (2023 Kahramanmaraş) · aktif segment</span>
+    </div>
+  `, { maxWidth: 280 }).addTo(lFay);
+
+// BAT (Batı Anadolu Tektonik) — Menderes-Gediz graben zonu ortası
+L.marker([38.1, 28.8], { icon: fayInfoIcon('#4ade80') })
+  .bindPopup(`
+    <div class="popup-title" style="color:#4ade80;">🟢 BAT — Batı Anadolu Genişleme Sistemi</div>
+    <div style="font-size:.78rem;color:#94a3b8;line-height:1.7;margin-top:4px;">
+      <b style="color:#e2e8f0;">Tip:</b> Normal Fay · Genişleme Rejimi · ~290 km<br>
+      <b style="color:#e2e8f0;">Bal:</b> Kızılçam (honeydew) · Çam · Kekik<br>
+      <b style="color:#e2e8f0;">Irk:</b> <em>A. m. anatoliaca</em> (Muğla ekotipi)<br>
+      <b style="color:#e2e8f0;">Sezon:</b> Kasım – Mart (çam balı) · Nisan–Haziran (çiçek)<br>
+      <b style="color:#e2e8f0;">Jeofizik:</b> Ca/Mg terroir · travertenli mineral çıkışı · UNESCO alanları<br>
+      <span style="font-size:.68rem;color:#475569;">Dünya kızılçam balı üretiminin %90'ı bu graben sisteminde</span>
+    </div>
+  `, { maxWidth: 300 }).addTo(lFay);
 
 // iframe içinde tile yükleme sorunu için invalidateSize
 setTimeout(function(){ map.invalidateSize(); }, 400);
