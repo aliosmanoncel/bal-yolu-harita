@@ -801,6 +801,67 @@ ecotypes.forEach(e => {
   }).addTo(map);
 });
 
+// ── KAYNAKLAR PANELİ ─────────────────────────────────────────
+const refBtn = L.control({ position: 'bottomright' });
+refBtn.onAdd = () => {
+  const div = L.DomUtil.create('div');
+  div.innerHTML = `
+    <button id="ref-toggle" onclick="document.getElementById('ref-panel').classList.toggle('hidden')"
+      style="background:rgba(15,23,42,.92);border:1px solid rgba(255,255,255,.15);color:#94a3b8;
+      border-radius:8px;padding:7px 14px;font-size:.75rem;cursor:pointer;font-family:'Segoe UI',sans-serif;">
+      📚 Kaynaklar
+    </button>
+    <div id="ref-panel" class="hidden" style="
+      margin-top:6px;background:rgba(15,23,42,.95);border:1px solid rgba(255,255,255,.12);
+      border-radius:10px;padding:14px 16px;font-size:.72rem;line-height:1.9;
+      color:#94a3b8;min-width:240px;max-width:280px;font-family:'Segoe UI',sans-serif;">
+      <div style="font-weight:700;color:#fbbf24;margin-bottom:8px;font-size:.78rem;">📚 Bilimsel Kaynaklar</div>
+      <div style="color:#64748b;font-size:.68rem;margin-bottom:8px;border-bottom:1px solid rgba(255,255,255,.07);padding-bottom:6px;">Jeolojik Veri</div>
+      <div>🗺️ <a href="https://www.mta.gov.tr" target="_blank" style="color:#7ab8ff;">MTA</a> — Aktif Fay Haritası</div>
+      <div>🚨 <a href="https://www.afad.gov.tr" target="_blank" style="color:#7ab8ff;">AFAD</a> — Deprem Kataloğu</div>
+      <div style="color:#64748b;font-size:.68rem;margin:8px 0 6px;border-bottom:1px solid rgba(255,255,255,.07);padding-bottom:6px;">İstatistiksel Veri</div>
+      <div>📊 <a href="https://www.tuik.gov.tr" target="_blank" style="color:#7ab8ff;">TÜİK</a> / <a href="https://www.fao.org" target="_blank" style="color:#7ab8ff;">FAO</a> — Arıcılık İstatistikleri</div>
+      <div>🐝 <a href="https://www.bugem.gov.tr" target="_blank" style="color:#7ab8ff;">BÜGEM</a> — Kovan Kayıt Sistemi</div>
+      <div style="color:#64748b;font-size:.68rem;margin:8px 0 6px;border-bottom:1px solid rgba(255,255,255,.07);padding-bottom:6px;">Biyokimyasal Kaynaklar</div>
+      <div>Varol, E. (2024). Arı zehiri biyokimyası. Ege Üniversitesi.</div>
+      <div>Tolon, B. (1999). Muğla çam balı özellikleri. Ege Üniversitesi.</div>
+      <div>Karabagias et al. (2014). <em>Food Chemistry</em>, 146, 548–557.</div>
+      <div style="color:#64748b;font-size:.68rem;margin:8px 0 6px;border-bottom:1px solid rgba(255,255,255,.07);padding-bottom:6px;">Teorik Çatı</div>
+      <div>Ikeya, M. (2004). <em>Earthquakes and Animals</em>. World Scientific.</div>
+      <div>Tautz, J. (2008). <em>The Buzz about Bees</em>. Springer.</div>
+      <div>Ruttner, F. (1988). <em>Biogeography and Taxonomy of Honeybees</em>. Springer.</div>
+      <div style="margin-top:8px;font-size:.65rem;color:#475569;border-top:1px solid rgba(255,255,255,.07);padding-top:6px;">
+        Öncel, A. O. (2026). <em>Fay Yolu Arıcılığı</em>.<br>
+        JeoTurizm EduPanel · v7 Final · İstanbul Üniversitesi-Cerrahpaşa
+      </div>
+    </div>`;
+  L.DomEvent.disableClickPropagation(div);
+  L.DomEvent.disableScrollPropagation(div);
+  return div;
+};
+refBtn.addTo(map);
+
+// ── METODOLOJİK DİSCLAIMER (harita altı footer) ─────────────
+const disclaimer = L.control({ position: 'bottomleft' });
+disclaimer.onAdd = () => {
+  const div = L.DomUtil.create('div');
+  div.innerHTML = `<div style="
+    background:rgba(15,23,42,.88);border:1px solid rgba(255,255,255,.1);
+    border-radius:8px;padding:8px 14px;font-size:.68rem;color:#64748b;
+    max-width:480px;line-height:1.6;font-family:'Segoe UI',sans-serif;
+    border-left:3px solid rgba(245,158,11,.5);">
+    <span style="color:#fbbf24;font-weight:600;">Metodolojik Not:</span>
+    Bu harita, aktif tektonik sistemler (BAT · KAF · DAF) ile göçer arıcılık koridorları ve arı ekotipleri arasındaki
+    olası mekânsal ilişkileri inceleyen kavramsal bir <em>Sismobiyofizik modelidir</em>.
+    Fay koordinatları yaklaşık jeolojik hatları temsil etmektedir.
+    Bilimsel hipotez niteliğindedir; saha verisiyle doğrulanması önerilir.
+    <span style="color:#475569;display:block;margin-top:3px;">Öncel, A. O. (2026) · İstanbul Üniversitesi-Cerrahpaşa · JeoTurizm EduPanel v7</span>
+  </div>`;
+  L.DomEvent.disableClickPropagation(div);
+  return div;
+};
+disclaimer.addTo(map);
+
 // iframe içinde tile yükleme sorunu için invalidateSize
 setTimeout(function(){ map.invalidateSize(); }, 400);
 window.addEventListener('load', function(){ map.invalidateSize(); });
