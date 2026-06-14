@@ -66,8 +66,8 @@
 <script>
 // ── Harita başlat ──────────────────────────────────────────────
 const map = L.map('map', {
-  center: [39.2, 35.5],
-  zoom: 6,
+  center: [39.2, 32.5],
+  zoom: 5,
   zoomControl: true
 });
 
@@ -145,6 +145,34 @@ L.polyline(eafCoords, {
 L.polyline(bafCoords, {
   color: C.baf, weight: 3, opacity: .8, dashArray: '6 5'
 }).bindTooltip('<strong style="color:#c084fc;">BAF</strong> · Bitlis-Zagros Kenet Kuşağı', {sticky:true}).addTo(map);
+
+// ── KAFZ GANOS UZANTISI — Marmara'dan Ege'ye ─────────────────
+const ganosCoords = [
+  [40.78, 29.50], // İzmit (NAF ile birleşim)
+  [40.85, 28.50], // Marmara Denizi kuzey kıyısı
+  [40.70, 27.50], // Tekirdağ / Ganos
+  [40.50, 26.70], // Şarköy — deniz çıkışı
+  [40.15, 26.00], // Gelibolu — Çanakkale Boğazı
+  [39.90, 26.20]  // Çanakkale / Biga
+];
+
+// Ganos hattını NAF'tan hafif kuzeye kaydır (offset) + daha kalın/belirgin
+const ganosOffset = ganosCoords.map(c => [c[0] + 0.15, c[1]]);
+L.polyline(ganosOffset, {
+  color: '#34d399', weight: 5, opacity: .95, dashArray: '12 4'
+}).bindTooltip('<strong style="color:#34d399;">KAFZ Ganos Uzantısı</strong> · Trakya Koridoru', {sticky:true}).addTo(map);
+
+// Kırklareli izole bölge hattı (kuzey blok)
+const trakyaCoords = [
+  [40.70, 27.50], // Tekirdağ / Ganos
+  [41.20, 27.80], // Çerkezköy — Tekirdağ hattı
+  [41.60, 27.20], // Kırklareli
+  [41.75, 27.50]  // Kofçaz (izole bölge merkezi)
+];
+
+L.polyline(trakyaCoords, {
+  color: '#34d399', weight: 2.5, opacity: .7, dashArray: '5 7'
+}).bindTooltip('<strong style="color:#34d399;">Trakya Uzantısı</strong> · Kırklareli İzole Bölgesi', {sticky:true}).addTo(map);
 
 // ── BAL YOLU ROTA ─────────────────────────────────────────────
 // Muğla → Antalya/Isparta → İç Anadolu → Karadeniz yayla → Erzincan → Bingöl
@@ -278,6 +306,69 @@ const stops = [
   }
 ];
 
+// ── TRAKYA UZANTISI DURAKLARI ─────────────────────────────────
+const trakyaStops = [
+  {
+    ll: [40.15, 26.30],
+    no: 'T1',
+    title: 'Çanakkale / Bozcaada — Kuzey Ege Çam Balı',
+    season: 'Temmuz – Eylül',
+    bal: 'Çam balı · kekik · sığırkuyruğu',
+    bio: 'A. m. carnica / anatoliaca geçiş kuşağı',
+    fault: 'KAFZ Ganos hattı batı ucu · Çanakkale boğaz tektoniği',
+    tags: ['Çam balı', 'Bozcaada izolasyonu', 'Kuzey Ege'],
+    km: 'Trakya Uzantısı'
+  },
+  {
+    ll: [40.20, 25.50],
+    no: 'T2',
+    title: 'Gökçeada — Ada İzolasyonu · Özgün Ekotip',
+    season: 'Haziran – Eylül',
+    bal: 'Kekik + yabani enginar + sığırkuyruğu karışım balı',
+    bio: 'A. m. carnica (izole ada popülasyonu)',
+    fault: 'Ada tektonik bloğu · Ege genişleme sistemi',
+    tags: ['Ada izolasyonu', 'Morfometrik ayrışma', 'Case Study', 'PDO adayı'],
+    km: 'Trakya Uzantısı'
+  },
+  {
+    ll: [41.73, 27.22],
+    no: 'T3',
+    title: 'Kırklareli / Kofçaz — Bakanlık İzole Bölgesi',
+    season: 'Temmuz – Ağustos',
+    bal: 'Ayçiçeği + meşe + faselya balı',
+    bio: 'A. m. macedonica · "Trakya Arısı" (30 km koruma alanı)',
+    fault: 'Karadeniz bloku · KAFZ kuzeyinde sismik istikrar',
+    tags: ['Bakanlık tescili', '30 km izole bölge', 'Faselya', 'Biyosensör düğümü'],
+    km: 'Trakya Uzantısı'
+  }
+];
+
+// Trakya duraklarını çiz (yeşil, farklı ikon)
+trakyaStops.forEach(s => {
+  const tagsHtml = s.tags.map(t => `<span class="popup-tag">${t}</span>`).join(' ');
+  const popupHtml = `
+    <div class="popup-title" style="color:#34d399;">🌿 TRAKYA UZANTISI — ${s.no} · ${s.title}</div>
+    <span class="popup-season" style="background:rgba(52,211,153,.15);border-color:rgba(52,211,153,.3);color:#34d399;">🗓 ${s.season}</span>
+    <div><b style="color:#86efac;">Bal:</b> ${s.bal}</div>
+    <div><b style="color:#c4b5fd;">Irk:</b> <em>${s.bio}</em></div>
+    <div style="margin-top:4px;">${tagsHtml}</div>
+    <div class="popup-fault">🌋 ${s.fault}</div>
+    <div style="font-size:.7rem;color:#64748b;margin-top:4px;">${s.km}</div>
+  `;
+  L.marker(s.ll, {
+    icon: L.divIcon({
+      html: `<div style="
+        width:32px;height:32px;border-radius:50%;
+        background:#0f2922;border:2px solid #34d399;
+        display:flex;align-items:center;justify-content:center;
+        font-size:.6rem;font-weight:700;color:#34d399;
+        box-shadow:0 0 10px #34d39955;
+      ">${s.no}</div>`,
+      iconSize: [32,32], iconAnchor:[16,16], popupAnchor:[0,-18], className:''
+    })
+  }).bindPopup(popupHtml, { maxWidth: 300 }).addTo(map);
+});
+
 // Durak işaretçisi ikonu
 function makeStopIcon(no, isFirst, isLast) {
   const bg = isFirst ? '#16a34a' : isLast ? '#dc2626' : '#1e293b';
@@ -321,13 +412,15 @@ legend.onAdd = () => {
     <div class="leg-row"><div class="leg-line" style="background:${C.naf};"></div><span style="color:#f87171;">NAF</span> · Kuzey Anadolu Fayı</div>
     <div class="leg-row"><div class="leg-line" style="background:${C.eaf};"></div><span style="color:#fb923c;">EAF</span> · Doğu Anadolu Fayı</div>
     <div class="leg-row"><div class="leg-line" style="background:${C.baf};"></div><span style="color:#c084fc;">BAF</span> · Bitlis-Zagros Kuşağı</div>
-    <div class="leg-row" style="margin-top:6px;"><div class="leg-line" style="background:${C.route};height:4px;"></div><span style="color:#fbbf24;">Bal Yolu</span> rotası</div>
+    <div class="leg-row"><div class="leg-line" style="background:#34d399;border-top:2px dashed #34d399;height:0;margin-top:6px;"></div><span style="color:#34d399;">Ganos / Trakya Uzantısı</span></div>
+    <div class="leg-row" style="margin-top:6px;"><div class="leg-line" style="background:${C.route};height:4px;"></div><span style="color:#fbbf24;">Bal Yolu</span> · ana eksen</div>
     <div class="leg-row"><div class="leg-dot" style="background:#16a34a;border:2px solid #4ade80;"></div>Başlangıç — Muğla</div>
     <div class="leg-row"><div class="leg-dot" style="background:#dc2626;border:2px solid #f87171;"></div>Bitiş — Bingöl</div>
+    <div class="leg-row"><div class="leg-dot" style="background:#0f2922;border:2px solid #34d399;"></div><span style="color:#34d399;">Trakya Uzantısı</span> durakları</div>
     <div style="margin-top:8px;font-size:.7rem;color:#64748b;border-top:1px solid rgba(255,255,255,.08);padding-top:6px;">
       Fay verileri: yaklaşık jeolojik hat<br>
       Duraklar: tıklayarak detay görün<br>
-      Öncel, A. O. (2026)
+      Öncel, A. O. (2026) · v5 Final
     </div>
   `;
   return div;
