@@ -970,44 +970,38 @@ function fayInfoIcon(color) {
 // KAF (Kuzey Anadolu Fayı) — hat ortası ~Erzincan yakını
 L.marker([40.5, 34.5], { icon: fayInfoIcon('#f87171') })
   .bindPopup(`
-    <div class="popup-title" style="color:#f87171;">🔴 KAF — Kuzey Anadolu Fayı</div>
-    <div style="font-size:.78rem;color:#94a3b8;line-height:1.7;margin-top:4px;">
-      <b style="color:#e2e8f0;">Tip:</b> Sağ Yanal Doğrultu Atımlı · ~1.500 km<br>
-      <b style="color:#e2e8f0;">Bal:</b> Kestane · Ihlamur · Orman Gülü · Yayla çiçek<br>
-      <b style="color:#e2e8f0;">Irk:</b> <em>A. m. caucasica</em> (Kafkas arısı)<br>
-      <b style="color:#e2e8f0;">Sezon:</b> Temmuz – Eylül<br>
-      <b style="color:#e2e8f0;">Jeofizik:</b> Sıkışma + sağ yanal kayma · Ca/Fe mineral zenginleşmesi<br>
-      <span style="font-size:.68rem;color:#475569;">Veri: MTA/AFAD · genelleştirilmiş hat</span>
+    <div class="popup-title" style="color:#f87171;">🔴 KAF — Kuzey Anadolu Fay Yolu Arıcılığı</div>
+    <div style="font-size:.78rem;color:#94a3b8;line-height:1.75;margin-top:6px;">
+      <b style="color:#e2e8f0;">Jeofizik:</b> Doğudan batıya Türkiye'yi kesen sağ yanal atımlı ana fay sistemi (~1.500 km); yüksek dağ silsileleri ve derin vadiler oluşturur. Ca/Fe mineral zenginleşmesi · aktif sismik kuşak.<br><br>
+      <b style="color:#e2e8f0;">Ekoloji / Bal:</b> Kestane, ıhlamur ve orman gülü florası; Kafkas ve Doğu Karadeniz ekotipleri (<em>A. m. caucasica</em>); deli bal ve kestane balı için çekirdek bölge. Sezon: Temmuz – Eylül.<br><br>
+      <b style="color:#e2e8f0;">Not:</b> Bu hat boyunca mikroklima ve toprak mineralojisi, Karadeniz arıcılığının karakteristik bal profilini şekillendirir.
     </div>
-  `, { maxWidth: 280 }).addTo(lFay);
+    <div style="font-size:.66rem;color:#475569;margin-top:6px;border-top:1px solid rgba(255,255,255,.07);padding-top:5px;">Veri: MTA/AFAD · genelleştirilmiş hat</div>
+  `, { maxWidth: 300 }).addTo(lFay);
 
 // EAF/DAF (Doğu Anadolu Fayı) — hat ortası ~Malatya kuzeyi
 L.marker([38.8, 38.0], { icon: fayInfoIcon('#fb923c') })
   .bindPopup(`
-    <div class="popup-title" style="color:#fb923c;">🟠 DAF — Doğu Anadolu Fayı</div>
-    <div style="font-size:.78rem;color:#94a3b8;line-height:1.7;margin-top:4px;">
-      <b style="color:#e2e8f0;">Tip:</b> Sol Yanal Doğrultu Atımlı · ~800 km<br>
-      <b style="color:#e2e8f0;">Bal:</b> Kekik · Geven · Badem · Kayısı<br>
-      <b style="color:#e2e8f0;">Irk:</b> <em>A. m. meda</em> / <em>syriaca</em> geçiş kuşağı<br>
-      <b style="color:#e2e8f0;">Sezon:</b> Ağustos – Ekim<br>
-      <b style="color:#e2e8f0;">Jeofizik:</b> Sol yanal kayma · bazaltik mineral zenginleşmesi<br>
-      <span style="font-size:.68rem;color:#475569;">M7.8 (2023 Kahramanmaraş) · aktif segment</span>
+    <div class="popup-title" style="color:#fb923c;">🟠 DAF — Kekik ve Badem Koridoru</div>
+    <div style="font-size:.78rem;color:#94a3b8;line-height:1.75;margin-top:6px;">
+      <b style="color:#e2e8f0;">Jeofizik:</b> Doğu Anadolu'da KB–GD yönelimli sol yanal fay zonu (~800 km); yükseltilmiş plato ve vadilerle keskin topoğrafik geçişler oluşturur. Bazaltik toprak mineralleşmesi · M7.8 (2023 Kahramanmaraş).<br><br>
+      <b style="color:#e2e8f0;">Ekoloji / Bal:</b> Kekik, geven ve badem ağırlıklı flora; Bingöl kekik balı, badem tozlaması ve yüksek irtifa çiçek balları öne çıkar. <em>A. m. meda / syriaca</em> geçiş kuşağı. Sezon: Ağustos – Ekim.<br><br>
+      <b style="color:#e2e8f0;">Not:</b> Kovan kiralama ve gezginci arıcılık için Türkiye'nin en dinamik "tarımsal fay koridoru"dur.
     </div>
-  `, { maxWidth: 280 }).addTo(lFay);
+    <div style="font-size:.66rem;color:#475569;margin-top:6px;border-top:1px solid rgba(255,255,255,.07);padding-top:5px;">Aktif segment · MTA/AFAD</div>
+  `, { maxWidth: 300 }).addTo(lFay);
 
 // BAT (Batı Anadolu Tektonik) — Menderes-Gediz graben zonu ortası
 L.marker([38.1, 28.8], { icon: fayInfoIcon('#4ade80') })
   .bindPopup(`
-    <div class="popup-title" style="color:#4ade80;">🟢 BAT — Batı Anadolu Genişleme Sistemi</div>
-    <div style="font-size:.78rem;color:#94a3b8;line-height:1.7;margin-top:4px;">
-      <b style="color:#e2e8f0;">Tip:</b> Normal Fay · Genişleme Rejimi · ~290 km<br>
-      <b style="color:#e2e8f0;">Bal:</b> Kızılçam (honeydew) · Çam · Kekik<br>
-      <b style="color:#e2e8f0;">Irk:</b> <em>A. m. anatoliaca</em> (Muğla ekotipi)<br>
-      <b style="color:#e2e8f0;">Sezon:</b> Kasım – Mart (çam balı) · Nisan–Haziran (çiçek)<br>
-      <b style="color:#e2e8f0;">Jeofizik:</b> Ca/Mg terroir · travertenli mineral çıkışı · UNESCO alanları<br>
-      <span style="font-size:.68rem;color:#475569;">Dünya kızılçam balı üretiminin %90'ı bu graben sisteminde</span>
+    <div class="popup-title" style="color:#4ade80;">🟢 BAT — Çam Balı ve Graben Sistemi</div>
+    <div style="font-size:.78rem;color:#94a3b8;line-height:1.75;margin-top:6px;">
+      <b style="color:#e2e8f0;">Jeofizik:</b> Genişleme rejimli normal fay zonları; kıyı–iç kesim arasında graben–horst yapıları ve orman kuşakları oluşturur. Ca/Mg terroir · travertenli mineral çıkışları · UNESCO Dünya Mirası alanları.<br><br>
+      <b style="color:#e2e8f0;">Ekoloji / Bal:</b> <em>Marchalina hellenica</em> ile ilişkili çam balı üretim kuşağı; Muğla ve çevresi, dünya çam balı üretiminin merkezidir. <em>A. m. anatoliaca</em> baskın. Sezon: Kasım – Mart (çam balı) · Nisan–Haziran (çiçek).<br><br>
+      <b style="color:#e2e8f0;">Not:</b> Bu koridor, hem Türkiye Bal Yolu'nun başlangıç–bitiş noktası hem de küresel çam balı ihracatının omurgasıdır.
     </div>
-  `, { maxWidth: 300 }).addTo(lFay);
+    <div style="font-size:.66rem;color:#475569;margin-top:6px;border-top:1px solid rgba(255,255,255,.07);padding-top:5px;">Dünya kızılçam balı üretiminin %90'ı bu graben sisteminde · Tolon 1999</div>
+  `, { maxWidth: 310 }).addTo(lFay);
 
 // iframe içinde tile yükleme sorunu için invalidateSize
 setTimeout(function(){ map.invalidateSize(); }, 400);
