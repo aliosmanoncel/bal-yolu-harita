@@ -930,19 +930,24 @@ refBtn.addTo(map);
 // ── METODOLOJİK DİSCLAIMER (harita altı footer) ─────────────
 const disclaimer = L.control({ position: 'bottomleft' });
 disclaimer.onAdd = () => {
-  const div = L.DomUtil.create('div');
-  div.innerHTML = `<div style="
-    background:rgba(15,23,42,.88);border:1px solid rgba(255,255,255,.1);
-    border-radius:8px;padding:8px 14px;font-size:.68rem;color:#64748b;
-    max-width:480px;line-height:1.6;font-family:'Segoe UI',sans-serif;
-    border-left:3px solid rgba(245,158,11,.5);">
-    <span style="color:#fbbf24;font-weight:600;">Metodolojik Not:</span>
-    Bu harita, aktif tektonik sistemler (BAT · KAF · DAF) ile göçer arıcılık koridorları ve arı ekotipleri arasındaki
-    olası mekânsal ilişkileri inceleyen kavramsal bir <em>Sismobiyofizik modelidir</em>.
-    Fay koordinatları yaklaşık jeolojik hatları temsil etmektedir.
-    Bilimsel hipotez niteliğindedir; saha verisiyle doğrulanması önerilir.
-    <span style="color:#475569;display:block;margin-top:3px;">Öncel, A. O. (2026) · İstanbul Üniversitesi-Cerrahpaşa · JeoTurizm EduPanel v7</span>
-  </div>`;
+  const div = L.DomUtil.create('div', 'legend');
+  div.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;"
+         onclick="(function(d){var b=d.querySelector('#dis-body');var t=d.querySelector('#dis-tog');var open=b.style.display!=='none';b.style.display=open?'none':'block';t.textContent=open?'▶':'▼';})(this.closest('.legend'))">
+      <h3 style="margin:0;color:#fbbf24;">📋 Metodolojik Not</h3>
+      <span id="dis-tog" style="color:#94a3b8;font-size:.8rem;margin-left:8px;">▼</span>
+    </div>
+    <div id="dis-body">
+      <div style="height:1px;background:rgba(255,255,255,.07);margin:6px 0;"></div>
+      <div style="font-size:.68rem;color:#64748b;line-height:1.6;">
+        Bu harita, aktif tektonik sistemler (BAT · KAF · DAF) ile göçer arıcılık koridorları ve arı ekotipleri arasındaki
+        olası mekânsal ilişkileri inceleyen kavramsal bir <em style="color:#94a3b8;">Sismobiyofizik modelidir</em>.
+        Fay koordinatları yaklaşık jeolojik hatları temsil etmektedir.
+        Bilimsel hipotez niteliğindedir; saha verisiyle doğrulanması önerilir.
+        <span style="color:#475569;display:block;margin-top:4px;">Öncel, A. O. (2026) · İstanbul Üniversitesi-Cerrahpaşa · JeoTurizm EduPanel v8 Final</span>
+      </div>
+    </div>
+  `;
   L.DomEvent.disableClickPropagation(div);
   return div;
 };
